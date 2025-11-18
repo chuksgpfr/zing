@@ -1,0 +1,17 @@
+*.env
+tmp
+.DS_STORE
+*.out
+*.log
+
+.prod
+
+config.dev
+config.prod
+
+logs/
+
+.idea
+
+out/
+zing-store
