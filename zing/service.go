@@ -39,3 +39,10 @@ func (s *Services) UpdateCommand(tag, cmd string) error {
 
 	return err
 }
+
+func (s *Services) RunCommand(tag string) (string, error) {
+	// update or store if not exist
+	cmd, err := s.store.Get(tag)
+
+	return cmd, err
+}

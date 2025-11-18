@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -15,7 +16,7 @@ func ZingCommand(service *Services) *cobra.Command {
 		Short: "zing through repetitive commands",
 	}
 
-	zingCmd.AddCommand(listCommands(service), addCommand(service))
+	zingCmd.AddCommand(listCommands(service), addCommand(service), runCommands(service))
 
 	return zingCmd
 }
@@ -90,4 +91,30 @@ func listCommands(service *Services) *cobra.Command {
 	}
 
 	return list
+}
+
+func runCommands(service *Services) *cobra.Command {
+
+	run := &cobra.Command{
+		Use:     "run",
+		Short:   "use this to run a stored command",
+		Example: "zing run <tag>",
+		Args:    cobra.RangeArgs(1, 1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			tag := strings.Join(args, " ")
+			command, err := service.RunCommand(tag)
+			if err != nil {
+				panic(err)
+			}
+			LogInfo(fmt.Sprintf("Running command \"%s\" ...", command))
+			// run a shell here in terminal
+			resp, err := RunShellCapture(command, time.Minute*30)
+			if err != nil {
+				panic(err)
+			}
+			LogNormalLn(resp)
+			return nil
+		},
+	}
+	return run
 }
