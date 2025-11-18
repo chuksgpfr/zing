@@ -45,12 +45,12 @@ zing version
 
 ### Add a task interactively
 ```bash
-zing add --tag "deploy" --cmd "docker compose build && docker compose push && kubectl rollout restart deploy/<variable> -n <variable>"
+zing add --tag "deploy" --cmd "docker compose build && docker compose push && kubectl rollout restart deploy/<variable1> -n <variable2>"
 ```
 
 ## Run it (with prompts for variables)
 ```
-zing run deploy
+zing run deploy variable1=kha variable2=gan
 ```
 
 
