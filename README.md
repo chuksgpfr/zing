@@ -27,7 +27,6 @@ Automate your most frequent CLI workflows with human-friendly aliases, templates
 - **Dry-run & preview:** See exactly what will execute before it runs.
 - **History & re-run:** Fuzzy search your last used tasks.
 - **Shell-native:** Works in bash/zsh/fish/PowerShell; autocompletion included.
-- **Extensible:** Plugin hooks in any language (exec via stdin/stdout).
 
 ---
 
