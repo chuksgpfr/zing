@@ -34,8 +34,14 @@ Automate your most frequent CLI workflows with human-friendly aliases, templates
 ## 🚀 Quick Start
 
 ### Install (Go example)
+- MacOS
 ```bash
-go install github.com/yourorg/zing/cmd/zing@latest
+brew install --cask chuksgpfr/zing
+```
+
+- Go
+```bash
+go install github.com/chuksgpfr/zing
 ```
 
 ### check version
