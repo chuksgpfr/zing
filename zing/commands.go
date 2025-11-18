@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 	"time"
 
@@ -38,7 +39,8 @@ func addCommand(service *Services) *cobra.Command {
 			// call your service to persist the command (uncomment and set correct import)
 			prompt, err := service.SetCommand(tag, action)
 			if err != nil {
-				return err
+				LogError(err)
+				return nil
 			}
 
 			if prompt {
@@ -56,9 +58,10 @@ func addCommand(service *Services) *cobra.Command {
 					if input == "y" || input == "yes" {
 						err := service.UpdateCommand(tag, action)
 						if err != nil {
-							return err
+							LogError(err)
+							return nil
 						}
-						msg := fmt.Sprintf("You have updated command for %s", tag)
+						msg := fmt.Sprintf("You have updated the zing for %s", tag)
 						LogSuccess(msg)
 						break
 					}
@@ -83,7 +86,7 @@ func listCommands(service *Services) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			commands, err := service.ListCommands()
 			if err != nil {
-				panic(err)
+				LogError(err)
 			}
 			LogInfo(commands)
 			return nil
@@ -99,17 +102,44 @@ func runCommands(service *Services) *cobra.Command {
 		Use:     "run",
 		Short:   "use this to run a stored command",
 		Example: "zing run <tag>",
-		Args:    cobra.RangeArgs(1, 1),
+		Args:    cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			tag := strings.Join(args, " ")
-			command, err := service.RunCommand(tag)
+			tag := args[0]
+			command, err := service.GetCommand(tag)
 			if err != nil {
 				LogError(err)
 				return nil
 			}
-			LogInfo(fmt.Sprintf("Running command \"%s\" ...", command))
+			variables := GetVariables(command)
+			fields := GetFieldsMap(command)
+
+			full := slices.Delete(args, 0, 1)
+
+			argMap := GetVariablesMap(full)
+
+			newCommand := command
+
+			for _, variable := range variables {
+				va, ok := argMap[variable]
+				if !ok {
+					reader := bufio.NewReader(os.Stdin)
+					LogMessage(fmt.Sprintf("You did not pass %s variable", variable))
+					LogNormal(fmt.Sprintf("Enter variable name for %s: ", variable))
+					input, _ := reader.ReadString('\n')
+					input = strings.TrimSpace(strings.ToLower(input))
+					va = input
+				}
+				field, ok := fields[variable]
+				if !ok {
+					LogError("Failed to find filed")
+					return nil
+				}
+				newCommand = strings.ReplaceAll(newCommand, field.(string), va.(string))
+			}
+
+			LogInfo(fmt.Sprintf("Running command \"%s\" ...", newCommand))
 			// run a shell here in terminal
-			resp, err := StreamShell(command, time.Minute*30)
+			resp, err := StreamShell(newCommand, time.Minute*30)
 			if err != nil {
 				LogError(err)
 			}

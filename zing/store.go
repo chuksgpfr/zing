@@ -75,7 +75,12 @@ func (s *Store) Get(key string) (string, error) {
 
 func (s *Store) Set(key, data string) error {
 	return s.db.Update(func(txn *badger.Txn) error {
-		return txn.Set([]byte(key), []byte(data))
+		err := txn.Set([]byte(key), []byte(data))
+		if err != nil {
+			return err
+		}
+
+		return nil
 	})
 }
 
