@@ -57,11 +57,11 @@ zing run deploy
 ## CLI Cheatsheet
 
 ```sh
-zing add <name> [flags]   # add/append a task interactively
+zing add --tag <name> ----cmd "<command>"   # add/append a task interactively
 zing run <name> [args]    # run a task or workflow
 zing list                 # list tasks with descriptions
 zing preview <name>       # render command with variables (no exec)
-zing suggest              # generate project-aware task suggestions
-zing history              # browse commands
+zing suggest              # generate project-aware task suggestions (Coming Soon)
+zing history              # browse commands (Coming Soon)
 zing shell                # start an interactive TUI picker
 ```
