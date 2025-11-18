@@ -104,13 +104,14 @@ func runCommands(service *Services) *cobra.Command {
 			tag := strings.Join(args, " ")
 			command, err := service.RunCommand(tag)
 			if err != nil {
-				panic(err)
+				LogError(err)
+				return nil
 			}
 			LogInfo(fmt.Sprintf("Running command \"%s\" ...", command))
 			// run a shell here in terminal
-			resp, err := RunShellCapture(command, time.Minute*30)
+			resp, err := StreamShell(command, time.Minute*30)
 			if err != nil {
-				panic(err)
+				LogError(err)
 			}
 			LogNormalLn(resp)
 			return nil
