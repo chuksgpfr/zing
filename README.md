@@ -35,7 +35,8 @@ Automate your most frequent CLI workflows with human-friendly aliases, templates
 ### Install (Go example)
 - MacOS
 ```bash
-brew install --cask chuksgpfr/zing
+brew tap zing https://github.com/chuksgpfr/zing
+brew install --cask zing
 ```
 
 - Go
