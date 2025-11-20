@@ -16,73 +16,32 @@ before:
     - go generate ./...
 
 builds:
-  - id: linux-amd64
-    binary: zing-{{ .Os }}-{{ .Arch }}
-    # main: ./main.go
+  - id: zing
+    main: ./main.go        # your entrypoint
+    binary: zing           # <-- SAME name everywhere
+    env:
+      - CGO_ENABLED=0
     goos:
       - linux
-    goarch:
-      - amd64
-    # ldflags:
-    #   - "{{ .Env.LDFLAGS }}"
-    no_unique_dist_dir: true
-
-  - id: darwin-amd64
-    binary: zing-{{ .Os }}-{{ .Arch }}
-    # main: ./main.go
-    goos:
       - darwin
-    goarch:
-      - amd64
-    # ldflags:
-    #   - "{{ .Env.LDFLAGS }}"
-    no_unique_dist_dir: true
-  - id: darwin-arm64
-    binary: zing-{{ .Os }}-{{ .Arch }}
-    # main: ./main.go
-    goos:
-      - darwin
-    goarch:
-      - arm64      # M1, M2, M3, M4 all use this
-    # ldflags:
-    #   - "{{ .Env.LDFLAGS }}"
-    no_unique_dist_dir: true
-
-  - id: windows-amd64
-    binary: zing-{{ .Os }}-{{ .Arch }}
-    # main: ./main.go
-    goos:
       - windows
     goarch:
       - amd64
-    # ldflags:
-    #   - -buildmode=exe
-    #   - "{{ .Env.LDFLAGS }}"
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
     no_unique_dist_dir: true
-# builds:
-#   - env:
-#       - CGO_ENABLED=0
-#     goos:
-#       - linux
-#       - windows
-#       - darwin
+
 
 archives:
   - id: default
-  - formats: [tar.gz]
-    # this name template makes the OS and Arch compatible with the results of `uname`.
-    # {{- if eq .Arch "amd64" }}x86_64
-    # name_template: >-
-    #   {{ .ProjectName }}_
-    #   {{- title .Os }}_
-    #   {{- if eq .Arch "386" }}i386
-    #   {{- else }}{{ .Arch }}{{ end }}
-    #   {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format: tar.gz
+    # standard template: project + version + os + arch
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    # use zip for windows archives
     format_overrides:
       - goos: windows
-        formats: [zip]
+        format: zip
 
 changelog:
   sort: asc
@@ -100,17 +59,15 @@ release:
 
 
 homebrew_casks:
-  - name: zing                   # cask name (defaults to project_name if omitted)
+  - name: zing
     binaries:
-      - zing                     # binary name inside the archive
+      - zing   # <-- matches builds.binary
 
     description: "Zing helps developers zing through repetitive commands."
     homepage: "https://github.com/chuksgpfr/zing"
 
-    # Where to put the generated cask file in *this same* repo
     directory: Casks
 
-    # Commit the cask to github.com/chuksgpfr/zing
     repository:
       owner: chuksgpfr
       name: zing
