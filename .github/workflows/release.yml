@@ -56,14 +56,29 @@ jobs:
 
           echo "next_tag=$NEXT_TAG" >> $GITHUB_OUTPUT
 
-      - name: Create tag
+      - name: Create tag (ensure unique)
         run: |
           NEXT_TAG="${{ steps.tag.outputs.next_tag }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          # If tag exists and points to a different commit, bump patch until free.
+          while git ls-remote --exit-code --tags origin "refs/tags/$NEXT_TAG" >/dev/null 2>&1; do
+            echo "Tag $NEXT_TAG exists, bumping patch..."
+            V=${NEXT_TAG#v}
+            MAJOR=${V%%.*}
+            REST=${V#*.}
+            MINOR=${REST%%.*}
+            PATCH=${REST##*.}
+            PATCH=$((PATCH + 1))
+            NEXT_TAG="v${MAJOR}.${MINOR}.${PATCH}"
+          done
+
+          echo "Creating tag: $NEXT_TAG"
           git tag "$NEXT_TAG"
           git push origin "$NEXT_TAG"
+          # export the final tag for downstream steps
+          echo "NEXT_TAG=$NEXT_TAG" >> $GITHUB_ENV
 
       - name: Set LDFLAGS env
         run: |
