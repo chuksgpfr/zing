@@ -31,7 +31,7 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
-    no_unique_dist_dir: true
+    no_unique_dist_dir: false
 
 
 archives:
