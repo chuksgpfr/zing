@@ -37,8 +37,8 @@ builds:
 archives:
   - id: default
     format: tar.gz
-    # standard template: project + version + os + arch
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    # project + version (strip leading "v") + os + arch
+    name_template: "{{ .ProjectName }}_{{ trimPrefix .Version \"v\" }}_{{ .Os }}_{{ .Arch }}"
     format_overrides:
       - goos: windows
         format: zip
