@@ -3,7 +3,7 @@ cask "zing" do
   name "zing"
   desc "Zing helps developers zing through repetitive commands."
   homepage "https://github.com/chuksgpfr/zing"
-  version "0.0.8"
+  version "0.0.10"
 
   livecheck do
     skip "Auto-generated on release."
@@ -14,22 +14,22 @@ cask "zing" do
   on_macos do
     on_intel do
       url "https://github.com/chuksgpfr/zing/releases/download/v#{version}/zing_#{version}_darwin_amd64.tar.gz"
-      sha256 "a4ddd0b649264d269946661edd62c0ad0f26763f290976c6e7b894ff78b4e438"
+      sha256 "c7c00a736f757bbac652353ca3b0841251039f59080ba60474b3a462710f08bb"
     end
     on_arm do
       url "https://github.com/chuksgpfr/zing/releases/download/v#{version}/zing_#{version}_darwin_arm64.tar.gz"
-      sha256 "a4ddd0b649264d269946661edd62c0ad0f26763f290976c6e7b894ff78b4e438"
+      sha256 "c7c00a736f757bbac652353ca3b0841251039f59080ba60474b3a462710f08bb"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/chuksgpfr/zing/releases/download/v#{version}/zing_#{version}_linux_amd64.tar.gz"
-      sha256 "a4ddd0b649264d269946661edd62c0ad0f26763f290976c6e7b894ff78b4e438"
+      sha256 "c7c00a736f757bbac652353ca3b0841251039f59080ba60474b3a462710f08bb"
     end
     on_arm do
       url "https://github.com/chuksgpfr/zing/releases/download/v#{version}/zing_#{version}_linux_arm64.tar.gz"
-      sha256 "a4ddd0b649264d269946661edd62c0ad0f26763f290976c6e7b894ff78b4e438"
+      sha256 "c7c00a736f757bbac652353ca3b0841251039f59080ba60474b3a462710f08bb"
     end
   end
 
