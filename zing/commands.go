@@ -15,6 +15,9 @@ func ZingCommand(service *Services) *cobra.Command {
 	zingCmd := &cobra.Command{
 		Use:   "zing",
 		Short: "zing through repetitive commands",
+		CompletionOptions: cobra.CompletionOptions{
+			DisableDefaultCmd: true,
+		},
 	}
 
 	zingCmd.AddCommand(listCommands(service), addCommand(service), runCommands(service))
