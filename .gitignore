@@ -17,3 +17,5 @@ out/
 zing-store
 # Added by goreleaser init:
 dist/
+
+Casks/
