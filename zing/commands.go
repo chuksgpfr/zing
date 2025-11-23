@@ -20,7 +20,7 @@ func ZingCommand(service *Services) *cobra.Command {
 		},
 	}
 
-	zingCmd.AddCommand(listCommands(service), addCommand(service), runCommands(service))
+	zingCmd.AddCommand(listCommands(service), addCommand(service), runCommands(service), previewCommand(service))
 
 	return zingCmd
 }
@@ -151,4 +151,26 @@ func runCommands(service *Services) *cobra.Command {
 		},
 	}
 	return run
+}
+
+func previewCommand(service *Services) *cobra.Command {
+	preview := &cobra.Command{
+		Use:   "preview",
+		Short: "Use this to preview all a command and see the args required",
+		Args:  cobra.RangeArgs(1, 1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			tag := args[0]
+			command, err := service.GetCommand(tag)
+			if err != nil {
+				LogError(err)
+			}
+			variables := len(GetVariables(command))
+
+			LogInfo(command)
+			LogMessage(fmt.Sprintf("There are %d variables needed for this command", variables))
+			return nil
+		},
+	}
+
+	return preview
 }

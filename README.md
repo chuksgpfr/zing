@@ -89,6 +89,4 @@ zing run <name> [args]    # run a task or workflow
 zing list                 # list tasks with descriptions
 zing preview <name>       # render command with variables (no exec)
 zing suggest              # generate project-aware task suggestions (Coming Soon)
-zing history              # browse commands (Coming Soon)
-zing shell                # start an interactive TUI picker
 ```
