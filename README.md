@@ -44,6 +44,27 @@ brew install --cask zing
 go install github.com/chuksgpfr/zing
 ```
 
+### Running on macOS (Gatekeeper notice)
+
+On macOS, you might see a warning like:
+
+> "Apple cannot verify that 'zing' is free of malware"
+
+This happens because `zing` is a custom CLI tool and not distributed via the Mac App Store.  
+If you downloaded `zing` from a trusted source (e.g. this GitHub repo), you can allow it:
+
+1. Try to run `zing` once so macOS shows the warning.
+2. Open **System Settings → Privacy & Security**.
+3. Scroll down until you see a message saying that **"zing was blocked"**.
+4. Click **"Allow Anyway"**, then run `zing` again and choose **"Open"**.
+
+Alternatively, from the terminal you can remove the quarantine flag:
+
+```bash
+xattr -d com.apple.quarantine /usr/local/bin/zing
+```
+
+
 ### check version
 ```sh
 zing version
